@@ -70,7 +70,7 @@ class BcaFireController extends Controller
 
         $transactionDetails = new \Bca\Api\Sdk\Fire\Models\Requests\TransferTransactionDetailsPayload();
         $transactionDetails->setCurrencyID('IDR');
-        $transactionDetails->setAmount('100000.00');
+        $transactionDetails->setAmount($request->amount);
         $transactionDetails->setPurposeCode('011');
         $transactionDetails->setDescription1('');
         $transactionDetails->setDescription2('');
