@@ -14,7 +14,7 @@ class BcaBusinessController extends Controller
         $builder->baseApiUri('https://api.finhacks.id/');
         $builder->baseOAuth2Uri('https://api.finhacks.id/');
         $builder->clientId('af4f556c-69e7-4d50-af4c-a0dad53cf60b');
-        $builder->clientSecret(' 7616f8e9-4e10-4747-9fe8-d1d28bd67f37');
+        $builder->clientSecret('7616f8e9-4e10-4747-9fe8-d1d28bd67f37');
         $builder->apiKey('dac28d4b-b964-4262-890d-52721ea2d07e');
         $builder->apiSecret('3e35958f-6ab2-477a-9c3b-8d8275d972c8');
         $builder->origin('127.0.0.1');
@@ -55,7 +55,7 @@ class BcaBusinessController extends Controller
         $payload = new \Bca\Api\Sdk\BusinessBanking\Models\Requests\TransferPayload();
         $payload->setSourceAccountNumber('8220000258');
         $payload->setTransactionID((string)mt_rand(10000000, 99999999));
-        $payload->setTransactionDate('2016-01-30');
+        $payload->setTransactionDate($request->transactionDate);
         $payload->setReferenceID('12345/PO/2016');
         $payload->setCurrencyCode('IDR');
         $payload->setAmount($request->amount);
