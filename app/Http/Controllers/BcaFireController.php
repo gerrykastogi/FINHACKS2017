@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-include(app_path() . '\Libraries\bca-finhacks-2017.phar');
+include(app_path() . '/Libraries/bca-finhacks-2017.phar');
 
-class BcaApiController extends Controller
+class BcaFireController extends Controller
 {
     private $config;
 
@@ -35,7 +35,7 @@ class BcaApiController extends Controller
         $senderDetails = new \Bca\Api\Sdk\Fire\Models\Requests\TransferSenderDetailsPayload();
         $senderDetails->setFirstName('John');
         $senderDetails->setLastName('Doe');
-        $senderDetails->setDateOfBirth('2000-05-20');
+        // $senderDetails->setDateOfBirth('2000-05-20');
         $senderDetails->setAddress1('HILLS STREET 1');
         $senderDetails->setAddress2('');
         $senderDetails->setCity('HOLLYWOOD');
@@ -49,7 +49,7 @@ class BcaApiController extends Controller
 
         $beneficiaryDetails = new \Bca\Api\Sdk\Fire\Models\Requests\TransferBeneficiaryDetailsPayload();
         $beneficiaryDetails->setName('Sam');
-        $beneficiaryDetails->setDateOfBirth('2000-05-20');
+        // $beneficiaryDetails->setDateOfBirth('2000-05-20');
         $beneficiaryDetails->setAddress1('HILLS STREET 1');
         $beneficiaryDetails->setAddress2('');
         $beneficiaryDetails->setCity('HOLLYWOOD');
@@ -66,7 +66,7 @@ class BcaApiController extends Controller
         $beneficiaryDetails->setBankCountryID('ID');
         $beneficiaryDetails->setBankAddress('');
         $beneficiaryDetails->setBankCity('');
-        $beneficiaryDetails->setAccountNumber('010203040506');
+        $beneficiaryDetails->setAccountNumber('8220000355');
 
         $transactionDetails = new \Bca\Api\Sdk\Fire\Models\Requests\TransferTransactionDetailsPayload();
         $transactionDetails->setCurrencyID('IDR');
