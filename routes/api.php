@@ -19,6 +19,7 @@ use Illuminate\Http\Request;
 
 Route::post('/bca/createUser', 'UserController@create');
 Route::get('/bca/getUser/{id}', 'UserController@getUserById');
+Route::get('/bca/getAllUser', 'UserController@getAll');
 Route::post('/bca/addBalance', 'UserController@addBalance');
 
 Route::post('/bca/createGroup', 'GroupController@create');
@@ -28,11 +29,13 @@ Route::post('/bca/group/create', 'GroupController@create');
 Route::post('/bca/group/edit', 'GroupController@edit');
 Route::post('/bca/group/addMember', 'GroupController@addMember');
 Route::post('/bca/group/removeMember', 'GroupController@removeMember');
+Route::get('/bca/getGroupById/{id}', 'GroupController@getGroupById');
 
 Route::post('/bca/event/index', 'EventController@index');
 Route::post('/bca/event/create', 'EventController@create');
 Route::post('/bca/event/edit', 'EventController@edit');
 Route::post('/bca/event/addMember', 'EventController@addMember');
 Route::post('/bca/event/removeMember', 'EventController@removeMember');
+Route::get('/bca/event/getEventById/{id}', 'EventController@getEventById');
 
 Route::get('/bca/transfer', 'BcaApiController@doTeleTransfer');

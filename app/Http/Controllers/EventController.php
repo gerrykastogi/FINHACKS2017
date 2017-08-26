@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
 {
@@ -97,5 +98,17 @@ class EventController extends Controller
     public function destroy(Event $event)
     {
         //
+    }
+
+    public function getEventById(int $id){
+        $eventId = DB::table('users_events')
+                    ->where('user_id', '=', $id)
+                    ->get();
+        $arEvent = array(Event::where('id', '=', $eventId[0]->event_id)->first());
+        for($i=1; $i<count($eventId); $i++){
+            array_push($arEvent, Event::where('id', '=', $eventId[$i]->event_id)->first());
+        }
+
+        return response()->json($arEvent);
     }
 }

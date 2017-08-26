@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Group;
+use App\User;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -113,29 +114,15 @@ class GroupController extends Controller
         //
     }
 
-    public function test(){
-        $client = new Client();
-        // $url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key=AIzaSyAT65_OGp-KOIb8aTd9uc3Whh3IbYrVEAY";
+    public function getGroupById(int $id){
+        $groupId = DB::table('users_groups')
+                    ->where('user_id', '=', $id)
+                    ->get();
+        $arGroup = array(Group::where('id', '=', $groupId[0]->group_id)->first());
+        for($i=1; $i<count($groupId); $i++){
+            array_push($arGroup, Group::where('id', '=', $groupId[$i]->group_id)->first());
+        }
 
-        // $response = $client->get($url);
-        
-        // $body = $response->getBody();
-
-        // echo $body;
-        $timestamp = date("yyyy-MM-ddTHH:mm:ss.SSSTZD");
-        
-        $resp = $client->get("/banking/v2/corporates/h2hauto009/accounts/0611104625") 
-        // $resp = $client->request('POST', 'http://127.0.0.1:8001/utilities/signature', [
-        //     'headers' => [
-        //         'Timestamp' => '2017-08-26T09:14:49+00:00',
-        //         'URI' => '/banking/v2/corporates/BCAAPI2016/accounts/8220000011',
-        //         'AccessToken' => 'MDBhMmNlY2YtNTdhOS00OTVkLWIzMzctMDUzNzk0ODFjZWEyOjkwZjg2NmYwLTBiYjEtNDE5Zi1iZmNjLWFiZDNjZTY1ZDBlMQ==',
-        //         'APISecret' => '60766ed9-2480-4f47-ab3f-68a5a719b54d',
-        //         'HTTPMethod' => 'GET'
-        //     ]
-        // ]);
-
-
-        return "success";
+        return response()->json($arGroup);
     }
 }

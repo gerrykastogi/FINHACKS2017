@@ -31,7 +31,7 @@ class UserController extends Controller
         $user->username = $request->username;
         $user->email = $request->email;    
         $user->pin = $request->pin;
-        if($request->$phoneNumber != ""){
+        if($request->phoneNumber != ""){
             $user->phoneNumber = $request->phoneNumber;    
         }
         if($request->bankAccount != ""){
@@ -100,6 +100,12 @@ class UserController extends Controller
 
     public function getUserById(int $id){
         $user = User::find($id);
+
+        return response()->json($user);
+    }
+
+    public function getAll(){
+        $user = User::all();
 
         return response()->json($user);
     }
