@@ -27,7 +27,7 @@ class BcaFireController extends Controller
         $this->config = $builder->build();
     }
 
-    public function doTeleTransfer() {
+    public function doTeleTransfer(Request $request) {
 
         $this->initConfig();
         $fireApi = new \Bca\Api\Sdk\Fire\FireApi($this->config);
