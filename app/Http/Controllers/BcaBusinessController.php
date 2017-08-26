@@ -33,12 +33,12 @@ class BcaBusinessController extends Controller
         $data = array();
         foreach ($response->getAccountDetailDataSuccess() as $account) {
             $item = array();
-            $item['acc_number'] = $account->getAccountNumber();
+            $item['accNumber'] = $account->getAccountNumber();
             $item['currency'] = $account->getCurrency();
             $item['balance'] = $account->getBalance();
-            $item['available_balance'] = $account->getAvailableBalance();
-            $item['float_amount'] = $account->getFloatAmount();
-            $item['hold_amount'] = $account->getHoldAmount();
+            $item['availableBalance'] = $account->getAvailableBalance();
+            $item['floatAmount'] = $account->getFloatAmount();
+            $item['holdAmount'] = $account->getHoldAmount();
             $item['plafon'] = $account->getPlafon();
             array_push($data, $item);
         }
@@ -46,4 +46,33 @@ class BcaBusinessController extends Controller
         return response()->json($data);
 
     }
+
+    public function doTransfer(Request $request) {
+
+        $this->initConfig();
+        $businessBankingApi = new \Bca\Api\Sdk\BusinessBanking\BusinessBankingApi($this->config);
+        
+        $payload = new \Bca\Api\Sdk\BusinessBanking\Models\Requests\TransferPayload();
+        $payload->setSourceAccountNumber('8220000258');
+        $payload->setTransactionID((string)mt_rand(10000000, 99999999));
+        $payload->setTransactionDate('2016-01-30');
+        $payload->setReferenceID('12345/PO/2016');
+        $payload->setCurrencyCode('IDR');
+        $payload->setAmount($request->amount);
+        $payload->setBeneficiaryAccountNumber('8220000355');
+        $payload->setRemark1('Transfer Test');
+        $payload->setRemark2('Online Transfer');
+
+        $response = $businessBankingApi->transferFund($payload);
+
+        $data = array();
+        $data['transactionId'] = $response->getTransactionID();
+        $data['transactionDate'] = $response->getTransactionDate();
+        $data['referenceId'] = $response->getReferenceID();
+        $data['status'] = $response->getStatus();
+
+        return response()->json($data);
+
+    }
+
 }
