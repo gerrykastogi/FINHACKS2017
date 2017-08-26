@@ -76,7 +76,7 @@ class BcaFireController extends Controller
         $transactionDetails->setDescription2('');
         $transactionDetails->setDetailOfCharges('SHA');
         $transactionDetails->setSourceOfFund('');
-        $transactionDetails->setFormNumber('RT254 ID1');
+        $transactionDetails->setFormNumber(substr(md5(microtime()),rand(0,26),10));
 
         $payload = new \Bca\Api\Sdk\Fire\Models\Requests\TransferToAccountPayload();
         $payload->setSenderDetails($senderDetails);
