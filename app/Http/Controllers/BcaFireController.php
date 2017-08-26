@@ -85,7 +85,15 @@ class BcaFireController extends Controller
 
         $response = $fireApi->transferToAccount($payload);
 
-        return $response->getStatusTransaction();
+        $data = array();
+        $data['statusTransaction'] = $response->getStatusTransaction();
+        $data['statusMessage'] = $response->getStatusMessage();
+        $transactionDetails = $response->getTransactionDetails();
+        $data['transferAmount'] = $transactionDetails->getAmount();
+        $data['referenceNumber'] = $transactionDetails->getReferenceNumber();
+        $data['releaseDateTime'] = $transactionDetails->getReleaseDateTime();
+
+        return response()->json($data);
 
     }
 }
