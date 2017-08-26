@@ -38,4 +38,7 @@ Route::post('/bca/event/addMember', 'EventController@addMember');
 Route::post('/bca/event/removeMember', 'EventController@removeMember');
 Route::get('/bca/event/getEventById/{id}', 'EventController@getEventById');
 
-Route::get('/bca/transfer', 'BcaApiController@doTeleTransfer');
+// BCA API
+Route::post('/bca/fire/transfer', 'BcaFireController@doTeleTransfer');
+Route::get('/bca/business/getBalance', 'BcaBusinessController@getBalanceInfo');
+Route::post('/bca/business/transfer', 'BcaBusinessController@doTransfer');

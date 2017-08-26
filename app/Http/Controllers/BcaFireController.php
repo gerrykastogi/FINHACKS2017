@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-include(app_path() . '\Libraries\bca-finhacks-2017.phar');
+include(app_path() . '/Libraries/bca-finhacks-2017.phar');
 
-class BcaApiController extends Controller
+class BcaFireController extends Controller
 {
     private $config;
 
@@ -27,7 +27,7 @@ class BcaApiController extends Controller
         $this->config = $builder->build();
     }
 
-    public function doTeleTransfer() {
+    public function doTeleTransfer(Request $request) {
 
         $this->initConfig();
         $fireApi = new \Bca\Api\Sdk\Fire\FireApi($this->config);
@@ -35,7 +35,7 @@ class BcaApiController extends Controller
         $senderDetails = new \Bca\Api\Sdk\Fire\Models\Requests\TransferSenderDetailsPayload();
         $senderDetails->setFirstName('John');
         $senderDetails->setLastName('Doe');
-        $senderDetails->setDateOfBirth('2000-05-20');
+        // $senderDetails->setDateOfBirth('2000-05-20');
         $senderDetails->setAddress1('HILLS STREET 1');
         $senderDetails->setAddress2('');
         $senderDetails->setCity('HOLLYWOOD');
@@ -49,7 +49,7 @@ class BcaApiController extends Controller
 
         $beneficiaryDetails = new \Bca\Api\Sdk\Fire\Models\Requests\TransferBeneficiaryDetailsPayload();
         $beneficiaryDetails->setName('Sam');
-        $beneficiaryDetails->setDateOfBirth('2000-05-20');
+        // $beneficiaryDetails->setDateOfBirth('2000-05-20');
         $beneficiaryDetails->setAddress1('HILLS STREET 1');
         $beneficiaryDetails->setAddress2('');
         $beneficiaryDetails->setCity('HOLLYWOOD');
@@ -66,17 +66,17 @@ class BcaApiController extends Controller
         $beneficiaryDetails->setBankCountryID('ID');
         $beneficiaryDetails->setBankAddress('');
         $beneficiaryDetails->setBankCity('');
-        $beneficiaryDetails->setAccountNumber('010203040506');
+        $beneficiaryDetails->setAccountNumber('8220000355');
 
         $transactionDetails = new \Bca\Api\Sdk\Fire\Models\Requests\TransferTransactionDetailsPayload();
         $transactionDetails->setCurrencyID('IDR');
-        $transactionDetails->setAmount('100000.00');
+        $transactionDetails->setAmount($request->amount);
         $transactionDetails->setPurposeCode('011');
         $transactionDetails->setDescription1('');
         $transactionDetails->setDescription2('');
         $transactionDetails->setDetailOfCharges('SHA');
         $transactionDetails->setSourceOfFund('');
-        $transactionDetails->setFormNumber('RT254 ID1');
+        $transactionDetails->setFormNumber(substr(md5(microtime()),rand(0,26),10));
 
         $payload = new \Bca\Api\Sdk\Fire\Models\Requests\TransferToAccountPayload();
         $payload->setSenderDetails($senderDetails);
@@ -85,7 +85,15 @@ class BcaApiController extends Controller
 
         $response = $fireApi->transferToAccount($payload);
 
-        return $response->getStatusTransaction();
+        $data = array();
+        $data['statusTransaction'] = $response->getStatusTransaction();
+        $data['statusMessage'] = $response->getStatusMessage();
+        $transactionDetails = $response->getTransactionDetails();
+        $data['transferAmount'] = $transactionDetails->getAmount();
+        $data['referenceNumber'] = $transactionDetails->getReferenceNumber();
+        $data['releaseDateTime'] = $transactionDetails->getReleaseDateTime();
+
+        return response()->json($data);
 
     }
 }
